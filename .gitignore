@@ -1,0 +1,7 @@
+*.log
+*.fcldump
+local.fcl
+test.py
+run_dataprep_apa7
+dqmw
+.runjobs*

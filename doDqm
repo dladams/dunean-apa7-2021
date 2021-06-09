@@ -1,0 +1,69 @@
+#!/bin/sh
+
+# Create and post DQM plots.
+
+RUN=$1
+EVT=$2
+OPT=${3:-run}
+if [ -z "$EVT" ]; then
+  echo Usage: $0 RUN EVT
+  exit 0
+fi
+FRUN=$(formatInt $RUN)
+FEVT=$(formatInt $EVT)
+
+# Fetch the event range holding this event.
+if ! FRAN=$(./getEventRange $EVT); then
+  echo Event range not found.
+  exit 1
+fi
+
+# Fetch the run configuration.
+if ! CFG=$(./getRunConfig $RUN); then
+  echo Run configuration not found.
+  exit 1
+fi
+
+FCLDIR=run_dataprep_apa7/$CFG/coldbox_dqm
+EVTDIR=np04_run${FRUN}_evts${FRAN}/event$FEVT
+RUNDIR=$FCLDIR/$EVTDIR
+WWWDIR=$HOME/wwwdune/protodune/apa7/data/dqm
+OUTDIR=$WWWDIR/$CFG/run$FRUN/event$FEVT
+
+if [ $OPT = clean ]; then
+  echo Cleaning...
+  echo Removing $RUNDIR
+  rm -rf $RUNDIR
+  echo Removing $OUTDIR
+  rm -rf $OUTDIR
+  exit 0
+fi
+
+if [ -r $OUTDIR ]; then
+  echo Web dir already exists: $OUTDIR
+  exit 1
+fi
+echo Output dir: $OUTDIR
+
+if [ -r $RUNDIR ]; then
+  echo Processing dir exists: $RUNDIR
+else
+  echo Processing data...
+  duneproc $FCLDIR $EVTDIR
+fi
+
+if ! ls $RUNDIR/adcraw*.png 2>&1 1>/dev/null; then
+  echo Run plots not found at $RUNDIR
+  exit 1
+fi
+
+if [ ! -d $WWWDIR ]; then
+  echo Base output dir not found: $WWWDIR
+  exit 1
+fi
+mkdir -p $OUTDIR
+cp $RUNDIR/*.png $OUTDIR
+makeIndex $OUTDIR
+makeIndex $OUTDIR/.. k
+makeIndex $OUTDIR/../.. k
+makeIndex $OUTDIR/../../.. k

@@ -1,0 +1,19 @@
+#!/bin/sh
+
+# getEventRange
+#
+# David Adams
+# May 2021
+#
+# Return the formatted event range holding an event.
+
+EVT=$1
+NEVT=${2:-1000}
+
+EVT1=$(($NEVT*($EVT/$NEVT)))
+EVT2=$(($EVT1+$NEVT))
+FEVT1=$(formatInt $EVT1)
+FEVT2=$(formatInt $EVT2)
+echo $FEVT1-$FEVT2
+exit 0
+

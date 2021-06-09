@@ -1,0 +1,3 @@
+# coldbox2019warm.fcl
+
+services.ChannelStatusService: @local::apa7warm_channel_status_2019

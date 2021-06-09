@@ -1,0 +1,53 @@
+#!/bin/sh
+
+# getRunConfig
+#
+# David Adams
+# May 2021
+#
+# Return a fcl config name for a run number.
+
+RUN=$1
+
+CFG=noSuchConfig
+RET=0
+if [ $RUN -ge 11835 ]; then
+  echo Configuration not set for run $RUN >&2
+  RET=1
+elif [ $RUN -ge 11834 ]; then
+  CFG=coldbox2021warming
+elif [ $RUN -ge 11831 ]; then
+  CFG=coldbox2021cold
+elif [ $RUN -ge 11829 ]; then
+  CFG=coldbox2021purging
+elif [ $RUN -ge 11824 ]; then
+  CFG=coldbox2021warm
+elif [ $RUN -ge 11819 ]; then
+  CFG=coldbox2021warming
+elif [ $RUN -ge 11817 ]; then
+  CFG=coldbox2021cold
+elif [ $RUN -ge 11816 ]; then
+  CFG=coldbox2021purging
+elif [ $RUN -ge 11812 ]; then
+  CFG=coldbox2021warm
+elif [ $RUN -ge 11811 ]; then
+  CFG=coldbox2021warming
+elif [ $RUN -ge 11809 ]; then
+  CFG=coldbox2021cold
+elif [ $RUN -ge 11807 ]; then
+  CFG=coldbox2021cooling
+elif [ $RUN -ge 11805 ]; then
+  CFG=coldbox2021warm
+elif [ $RUN -eq 11795 ]; then
+  CFG=coldbox2019warm
+elif [ $RUN -gt 10290 ]; then
+  echo Configuration not set for run $RUN >&2
+  RET=1
+elif [ $RUN -ge 10074 ]; then
+  CFG=coldbox2019cold
+else
+  echo Configuration not set for run $RUN >&2
+  RET=1
+fi
+echo $CFG
+exit $RET

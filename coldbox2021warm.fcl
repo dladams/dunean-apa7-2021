@@ -1,0 +1,4 @@
+# coldbox2021warm.fcl
+
+services.ChannelStatusService.BadChannels: [2558]
+services.ChannelStatusService.NoisyChannels: []

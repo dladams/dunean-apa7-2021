@@ -1,0 +1,10 @@
+#!/bin/sh
+
+RUN=$1
+EVT1=${2:-0}
+EVT2=${3:-$(echo $(($EVT1+1000)))}
+if [ -z "$RUN" ]; then
+  echo Usage: $0 RUN [EVT1 [EVT2]]
+  exit 0
+fi
+duneEventFileList $RUN $EVT1 $EVT2 stage
